@@ -38,6 +38,14 @@
         "variants_wrMWxp": {
           "type": "variants",
           "settings": {}
+        },
+        "add_to_cart_TJWJFU": {
+          "type": "add_to_cart",
+          "settings": {}
+        },
+        "product_icons_4VtDHk": {
+          "type": "product_icons",
+          "settings": {}
         }
       },
       "block_order": [
@@ -45,7 +53,9 @@
         "title_8pcm64",
         "description_DirFHM",
         "product_content_fGjkWb",
-        "variants_wrMWxp"
+        "variants_wrMWxp",
+        "add_to_cart_TJWJFU",
+        "product_icons_4VtDHk"
       ],
       "settings": {
         "product": "test-product"
