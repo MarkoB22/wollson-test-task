@@ -1,0 +1,131 @@
+{{ 'custom-main-product.css' | asset_url | stylesheet_tag }}
+{%  liquid  
+    assign product = section.settings.product
+%} 
+
+<div class="custom_main_product-section_wrapper">
+    <div class="custom_main_product-images_container">
+        <div class="custom_main_product-main_image_wrapper">
+            {% if product.featured_media %}
+                {% assign image = product.featured_media.preview_image %}
+                <div class="custom_main_product-main_image">
+                    <img
+                    alt="{{ image.alt }}"
+                    src="{{ image | image_url }}"
+                    width="{{ image.width }}"
+                    height="{{ image.height }}"
+                    >
+                </div>
+            {% endif %}
+        </div>
+        <div class="custom_main_product-thumbnails_wrapper">
+            {% for image in product.media %}
+                <div class="">
+                    <img
+                    alt="{{ image.alt }}"
+                    src="{{ image | image_url }}"
+                    width="{{ image.width }}"
+                    height="{{ image.height }}"
+                    >
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="custom_main_product-product_info">
+        {% for block in section.blocks %}
+            {% case block.type %}
+
+                {% when 'reviews' %}
+                <div class="custom_main_product-reviews">
+                    Reviews placeholder ★★★★★
+                </div>
+                
+                {% when 'title' %}
+                <h2 class="custom_main_product-title">
+                    {{ product.title }}
+                </h2>
+                
+                {% when 'description' %}
+                <p class="custom_main_product-description">
+                    {{ product.description }}
+                </p>
+                
+                {% when 'product_content' %}
+                {% for text in product.metafields.custom.what_is_inside_title %}
+                    <div class="custom_main_product-what_is_inside-title">
+                        <h3>{{ text }}</h3>
+                    </div>
+                    <div class="custom_main_product-what_is_inside-description">
+                        <p>{{ product.metafields.custom.what_is_inside_description.value[forloop.index] }}</p>
+                    </div>
+                {% endfor %}
+
+                {% when 'variants' %}
+                    <div class="custom_main_product-variants_selectors">
+                        Variants selectors placeholder
+                    </div>
+                {% when 'add_to_cart' %}
+                    <div class="custom_main_product-add_to_cart">
+                        Add to cart button placeholder
+                    </div>
+                {% when 'product_icons' %}
+                    <div class="custom_main_product-icons_wrapper">
+                        {% for icon in product.metafields.custom.product_icons %}
+                            <div class="custom_main_product-icon">
+                            <img 
+                            alt="{{ icon.alt }}"
+                            src="{{ icon | image_url }}"
+                            width="{{ icon.width }}"
+                            height="{{ icon.height }}"
+                            >
+                            </div>
+                        {% endfor %}
+                    </div>
+            {% endcase %}
+        {% endfor %}
+    </div>
+</div>
+{%  schema  %}  
+{
+  "name": "Custom main product",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Pick a product"
+    }
+  ],
+  "blocks": [
+    {
+        "type": "reviews",
+        "name": "Product reviews"
+    },
+    {
+        "type": "title",
+        "name": "Product title"
+    },
+    {
+        "type": "description",
+        "name": "Product description"
+    },
+    {
+        "type": "product_content",
+        "name": "Product content"
+    },
+    {
+        "type": "variants",
+        "name": "Variants selector"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom main product",
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}
