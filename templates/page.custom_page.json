@@ -15,9 +15,45 @@
         "padding_top": 28,
         "padding_bottom": 28
       }
+    },
+    "custom_main_product_ia73Cr": {
+      "type": "custom-main-product",
+      "blocks": {
+        "reviews_MMricQ": {
+          "type": "reviews",
+          "settings": {}
+        },
+        "title_8pcm64": {
+          "type": "title",
+          "settings": {}
+        },
+        "description_DirFHM": {
+          "type": "description",
+          "settings": {}
+        },
+        "product_content_fGjkWb": {
+          "type": "product_content",
+          "settings": {}
+        },
+        "variants_wrMWxp": {
+          "type": "variants",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "reviews_MMricQ",
+        "title_8pcm64",
+        "description_DirFHM",
+        "product_content_fGjkWb",
+        "variants_wrMWxp"
+      ],
+      "settings": {
+        "product": "test-product"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "custom_main_product_ia73Cr"
   ]
 }
