@@ -1,34 +1,54 @@
 {{ 'custom-main-product.css' | asset_url | stylesheet_tag }}
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'swiper.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'custom-main-product.js' | asset_url }}" defer="defer"></script>
+
+
+
 {%  liquid  
     assign product = section.settings.product
 %} 
 
 <div class="custom_main_product-section_wrapper">
     <div class="custom_main_product-images_container">
-        <div class="custom_main_product-main_image_wrapper">
-            {% if product.featured_media %}
-                {% assign image = product.featured_media.preview_image %}
-                <div class="custom_main_product-main_image">
-                    <img
-                    alt="{{ image.alt }}"
-                    src="{{ image | image_url }}"
-                    width="{{ image.width }}"
-                    height="{{ image.height }}"
-                    >
-                </div>
-            {% endif %}
+        
+        <div class="custom_main_product-swiper swiper">
+            <div class="custom_main_product-main_image_wrapper swiper-wrapper">
+                {% for media in product.media %}
+                    <div class="custom_main_product-main_image swiper-slide">
+                        <img
+                        alt="{{ media.alt }}"
+                        src="{{ media | image_url }}"
+                        width="{{ media.width }}"
+                        height="{{ media.height }}">
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="custom-swiper-button-next">
+                <svg width="11" height="18" viewBox="0 0 11 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 0.698242L9 8.69824L1 16.6982" stroke="#61402E" stroke-width="2"/>
+                </svg>
+            </div>
+            <div class="custom-swiper-button-prev">
+                <svg width="11" height="18" viewBox="0 0 11 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 0.698242L2 8.69824L10 16.6982" stroke="#61402E" stroke-width="2"/>
+            </svg>
+            </div>
+
         </div>
-        <div class="custom_main_product-thumbnails_wrapper">
-            {% for image in product.media %}
-                <div class="">
-                    <img
-                    alt="{{ image.alt }}"
-                    src="{{ image | image_url }}"
-                    width="{{ image.width }}"
-                    height="{{ image.height }}"
-                    >
-                </div>
-            {% endfor %}
+
+        <div class="custom_main_product-thumbnails_wrapper swiper thumbsSwiper">
+            <div class="swiper-wrapper">
+                {% for media in product.media %}
+                    <div class="custom_main_product-thumbnail swiper-slide" thumbnail-alt="{{ media.alt }}">
+                        <img
+                        src="{{ media | image_url }}"
+                        width="67"
+                        height="52">
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
     <div class="custom_main_product-product_info">
@@ -47,30 +67,32 @@
                 
                 {% when 'description' %}
                 <p class="custom_main_product-description">
-                    {{ product.description }}
+                    {{ product.description |  strip_html }}
                 </p>
                 
                 {% when 'product_content' %}
-                {% for text in product.metafields.custom.what_is_inside_title %}
-                    <div class="custom_main_product-what_is_inside-title">
-                        <h3>{{ text }}</h3>
-                    </div>
-                    <div class="custom_main_product-what_is_inside-description">
-                        <p>{{ product.metafields.custom.what_is_inside_description.value[forloop.index] }}</p>
-                    </div>
-                {% endfor %}
+                    {% for text in product.metafields.custom.what_is_inside_title.value %}
+                        <div class="custom_main_product-what_is_inside-title">
+                            <h3>{{ text }}</h3>
+                        </div>
+                        <div class="custom_main_product-what_is_inside-description">
+                            <p>{{ product.metafields.custom.what_is_inside_description.value[forloop.index] }}</p>
+                        </div>
+                    {% endfor %}
 
                 {% when 'variants' %}
                     <div class="custom_main_product-variants_selectors">
                         Variants selectors placeholder
                     </div>
+
                 {% when 'add_to_cart' %}
                     <div class="custom_main_product-add_to_cart">
                         Add to cart button placeholder
                     </div>
+
                 {% when 'product_icons' %}
                     <div class="custom_main_product-icons_wrapper">
-                        {% for icon in product.metafields.custom.product_icons %}
+                        {% for icon in product.metafields.custom.product_icons.value %}
                             <div class="custom_main_product-icon">
                             <img 
                             alt="{{ icon.alt }}"
@@ -81,10 +103,12 @@
                             </div>
                         {% endfor %}
                     </div>
+
             {% endcase %}
         {% endfor %}
     </div>
 </div>
+
 {%  schema  %}  
 {
   "name": "Custom main product",
