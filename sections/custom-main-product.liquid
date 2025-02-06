@@ -57,7 +57,23 @@
 
                 {% when 'reviews' %}
                 <div class="custom_main_product-reviews">
-                    Reviews placeholder ★★★★★
+                {% assign rating = block.settings.rating %}
+                    <span class="custom_main_product-stars">
+                        {% for i in (1..5) %}
+                            {% if i <= rating %}
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 6.18175L10.1863 5.79953L7.99681 0.299034L5.80734 5.79953L0 6.18175L4.45419 9.96382L2.99256 15.701L7.99681 12.5378L13.0011 15.701L11.5395 9.96382L16 6.18175Z" fill="#F8C063"/>
+                                </svg>
+                            {% else %}
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 6.18175L10.1863 5.79953L7.99681 0.299034L5.80734 5.79953L0 6.18175L4.45419 9.96382L2.99256 15.701L7.99681 12.5378L13.0011 15.701L11.5395 9.96382L16 6.18175Z" fill="grey"/>
+                                </svg>
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                    <span class="custom_main_product-review_text">{{ block.settings.review_text }}</span>
+                    
+
                 </div>
                 
                 {% when 'title' %}
@@ -71,19 +87,61 @@
                 </p>
                 
                 {% when 'product_content' %}
+                    <div class="custom_main_product-what_is_inside-title">
+                        {{ block.settings.inside_block_title }}
+                    </div>
                     {% for text in product.metafields.custom.what_is_inside_title.value %}
-                        <div class="custom_main_product-what_is_inside-title">
-                            <h3>{{ text }}</h3>
+                        <div class="custom_main_product-what_is_inside-item_title">
+                            <div class="custom_main_product-what_is_inside-icon">
+                                <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="21" height="21" rx="10.5" fill="#F8C063"/>
+                                    <path d="M8.6625 15.0094L4.3875 10.7344L5.45625 9.66563L8.6625 12.8719L15.5438 5.99063L16.6125 7.05938L8.6625 15.0094Z" fill="#61402E"/>
+                                </svg>
+                            </div>
+                            <div>{{ text | strip_html }}</div>
                         </div>
                         <div class="custom_main_product-what_is_inside-description">
-                            <p>{{ product.metafields.custom.what_is_inside_description.value[forloop.index] }}</p>
+                            <p>{{ product.metafields.custom.what_is_inside_description.value[forloop.index0] | strip_html }}</p>
                         </div>
                     {% endfor %}
 
                 {% when 'variants' %}
                     <div class="custom_main_product-variants_selectors">
-                        Variants selectors placeholder
+                    {% for option in product.options_with_values %}
+                        <div class="custom_main_product-variant_color-variant_option">
+                        <span class="custom_main_product-variant_color-variant_title">{{ 'products.product.variant_title' | t }} {{ option.name }}</span>
+                        
+                        {% if option.name == 'Color' or option.name- == 'color' %}
+                            <div class="custom_main_product-variant_color">
+                            {% for value in option.values %}
+                                {% assign variant = product.variants | where: 'option1', value | first %}
+                                <label class="custom_main_product-color_label" data-color="{{ value | downcase }}">
+                                <input 
+                                    type="radio" 
+                                    name="color" 
+                                    value="{{ value }}" 
+                                    data-variant-id="{{ variant.id }}"
+                                    class="custom_main_product-color_option"
+                                    {% if forloop.first %}checked{% endif %}
+                                >
+                                <span class="custom_main_product-color_box_wrapper">
+                                    <span class="custom_main_product-color_box" style="background-color: {{ product.metafields.custom.variant_colors.value[forloop.index0] }};"></span>
+                                </span>
+                                </label>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                            <select class="variant-dropdown" name="{{ option.name }}">
+                            {% for value in option.values %}
+                                {% assign variant = product.variants | where: option.name, value | first %}
+                                <option value="{{ value }}" data-variant-id="{{ variant.id }}">{{ value }}</option>
+                            {% endfor %}
+                            </select>
+                        {% endif %}
+                        </div>
+                    {% endfor %}
                     </div>
+
 
                 {% when 'add_to_cart' %}
                     <div class="custom_main_product-add_to_cart">
@@ -97,8 +155,6 @@
                             <img 
                             alt="{{ icon.alt }}"
                             src="{{ icon | image_url }}"
-                            width="{{ icon.width }}"
-                            height="{{ icon.height }}"
                             >
                             </div>
                         {% endfor %}
@@ -109,6 +165,9 @@
     </div>
 </div>
 
+<script>
+
+</script>
 {%  schema  %}  
 {
   "name": "Custom main product",
@@ -125,7 +184,24 @@
   "blocks": [
     {
         "type": "reviews",
-        "name": "Product reviews"
+        "name": "Product reviews",
+        "settings": [
+            {
+                "type": "range",
+                "id": "rating",
+                "label": "Number of stars",
+                "default": 5,
+                "step": 1,
+                "min": 1,
+                "max": 5
+            },
+            {
+                "type": "text",
+                "id": "review_text",
+                "label": "Review text",
+                "default": "107 reviews"
+            }
+        ]
     },
     {
         "type": "title",
@@ -137,7 +213,15 @@
     },
     {
         "type": "product_content",
-        "name": "Product content"
+        "name": "Product content",
+        "settings": [
+            {
+                "type": "text",
+                "id": "inside_block_title",
+                "label": "What's inside block title",
+                "default": "What's inside:"
+            }
+        ]
     },
     {
         "type": "variants",
