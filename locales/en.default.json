@@ -166,7 +166,10 @@
       "xr_button": "View in your space",
       "xr_button_label": "View in your space, loads item in augmented reality window",
       "include_taxes": "Tax included.",
-      "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout."
+      "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout.",
+      "free_shipping": "Free US Shipping over $65 | Free US Returns",
+      "installments": "interest-free installments of",
+      "with": "with"
     },
     "modal": {
       "label": "Media gallery"

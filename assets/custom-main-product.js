@@ -128,7 +128,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Get the correct inventory quantity
             maxQuantity = inventoryData[selectedVariantId] ?? Infinity;
-            console.log(`Variant ID: ${selectedVariantId}, Inventory: ${maxQuantity}`);
 
             // Handle Out of Stock Case
             if (maxQuantity === 0) {
@@ -244,6 +243,34 @@ document.addEventListener("DOMContentLoaded", function () {
     updateVariant();
 });
 
+function updateInstallment() {
+    const priceElement = document.querySelector(".custom_main_product-price");
+    const installmentsElement = document.querySelector(".custom_main_product-number_of_instalments");
+    const singleInstallmentElement = document.querySelector(".custom_main_product-single_installment");
 
+    if (!priceElement || !installmentsElement || !singleInstallmentElement) return;
+
+    // Extract price and currency
+    const priceText = priceElement.textContent.trim();
+    const priceMatch = priceText.match(/([\D]*)([\d,.]+)/); // Match currency and numeric value
+
+    if (!priceMatch) return;
+
+    const currencySymbol = priceMatch[1].trim();
+    const priceNumber = parseFloat(priceMatch[2].replace(/,/g, "")); // Remove commas for thousands separators
+    const installments = parseInt(installmentsElement.textContent.trim(), 10);
+
+    if (isNaN(priceNumber) || isNaN(installments) || installments <= 0) return;
+
+    const installmentPrice = (priceNumber / installments).toFixed(2);
+    singleInstallmentElement.textContent = `${currencySymbol}${installmentPrice}`;
+}
+
+// Observe price changes
+const priceObserver = new MutationObserver(updateInstallment);
+const priceElement = document.querySelector(".custom_main_product-price");
+if (priceElement) {
+    priceObserver.observe(priceElement, { childList: true, characterData: true, subtree: true });
+}
 
 

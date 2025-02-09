@@ -295,6 +295,8 @@
 
 .custom_main_product-add_to_cart_and_quantity {
     margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
 }
 
 .custom_main_product-quantity_selector {
@@ -336,6 +338,25 @@
 .custom_main_product-compare_price {
     text-decoration: line-through;
     color: grey;
+}
+
+.custom_main_product-free_shipping {
+    display: flex;
+    justify-content: center;
+    letter-spacing: -0.2px;
+}
+
+.custom_main_product-installment_payments{
+    margin-bottom: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: -0.2px;
+}
+
+.custom_main_product-installments_icon {
+    display: flex;
 }
 
 @media only screen and (min-width: 1025px) {
