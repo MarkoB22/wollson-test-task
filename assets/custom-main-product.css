@@ -557,4 +557,8 @@
         align-items: center;
         width: calc(100% - 132px);
     }
+
+    .custom_main_product-add_to_cart_and_quantity .disabled {
+        width: 100%;
+    }
 }
