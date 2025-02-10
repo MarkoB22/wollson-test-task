@@ -107,6 +107,7 @@
   "products": {
     "product": {
       "add_to_cart": "Add to cart",
+      "out_of_stock": "Out of stock",
       "choose_options": "Choose options",
       "choose_product_options": "Choose options for {{ product_name }}",
       "description": "Description",
@@ -169,7 +170,9 @@
       "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout.",
       "free_shipping": "Free US Shipping over $65 | Free US Returns",
       "installments": "interest-free installments of",
-      "with": "with"
+      "with": "with",
+      "added": "ADDED!",
+      "view_cart": " View Cart",
     },
     "modal": {
       "label": "Media gallery"

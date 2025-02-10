@@ -131,15 +131,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Handle Out of Stock Case
             if (maxQuantity === 0) {
-                addToCartBtn.disabled = true;
-                addToCartBtn.classList.add("disabled");
+                productDataElement.disabled = true;
+                productDataElement.classList.add("disabled");
 
                 // Set quantity to 1 and disable it
                 quantityInput.value = 1;
                 quantityInput.disabled = true;
             } else {
-                addToCartBtn.disabled = false;
-                addToCartBtn.classList.remove("disabled");
+                productDataElement.disabled = false;
+                productDataElement.classList.remove("disabled");
 
                 // Enable quantity input and adjust it if necessary
                 quantityInput.disabled = false;
@@ -232,7 +232,6 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(response => response.json())
             .then(data => {
-                alert("Added to cart!");
             })
             .catch(error => console.error('Error adding to cart:', error));
         } else {
@@ -250,14 +249,13 @@ function updateInstallment() {
 
     if (!priceElement || !installmentsElement || !singleInstallmentElement) return;
 
-    // Extract price and currency
     const priceText = priceElement.textContent.trim();
-    const priceMatch = priceText.match(/([\D]*)([\d,.]+)/); // Match currency and numeric value
+    const priceMatch = priceText.match(/([\D]*)([\d,.]+)/);
 
     if (!priceMatch) return;
 
     const currencySymbol = priceMatch[1].trim();
-    const priceNumber = parseFloat(priceMatch[2].replace(/,/g, "")); // Remove commas for thousands separators
+    const priceNumber = parseFloat(priceMatch[2].replace(/,/g, ""));
     const installments = parseInt(installmentsElement.textContent.trim(), 10);
 
     if (isNaN(priceNumber) || isNaN(installments) || installments <= 0) return;
@@ -272,5 +270,105 @@ const priceElement = document.querySelector(".custom_main_product-price");
 if (priceElement) {
     priceObserver.observe(priceElement, { childList: true, characterData: true, subtree: true });
 }
+
+
+// Add to cart popup
+document.addEventListener("DOMContentLoaded", function () {
+
+    const addToCartButton = document.getElementById("add-to-cart");
+    const popupImage = document.querySelector(".custom_main_product-carted_popup-image img");
+    const popupOptionsContainer = document.querySelector(".custom_main_product-carted_popup-product_info");
+    const popupColorBox = document.getElementById("popup-color");
+    const popupContainer = document.querySelector(".custom_main_product-carted_popup");
+
+    if (!addToCartButton || !popupImage || !popupOptionsContainer || !popupColorBox) {
+        console.error("❌ Required elements not found!");
+        return;
+    }
+
+
+    // Function to get selected color name
+    function getSelectedColor() {
+        const selectedColorInput = document.querySelector(".custom_main_product-color_option:checked");
+        if (!selectedColorInput) {
+            console.error("❌ No color selected!");
+            return null;
+        }
+
+        const selectedColor = selectedColorInput.value.trim();
+        return selectedColor;
+    }
+
+    // Function to get the color code from the color box
+    function getColorCode(colorName) {
+        const colorLabel = document.querySelector(`.custom_main_product-color_label[data-color="${colorName.toLowerCase()}"]`);
+        
+        if (colorLabel) {
+
+            const colorBox = colorLabel.querySelector(".custom_main_product-color_box");
+            if (colorBox) {
+                return colorBox.style.backgroundColor;
+            } else {
+                console.error("❌ Color box not found inside label!");
+            }
+        } else {
+            console.error(`❌ No color label found for: ${colorName}`);
+        }
+
+        return null;
+    }
+
+    function getSelectedSize() {
+        const sizeDropdown = document.querySelector(".custom_main_product-custom_dropdown_selected_text");
+        if (!sizeDropdown) {
+            console.error("❌ Size dropdown not found!");
+            return null;
+        }
+
+        const selectedSize = sizeDropdown.innerHTML.trim();
+        return selectedSize;
+    }
+
+    function updatePopup() {
+
+        const selectedColor = getSelectedColor();
+        if (selectedColor) {
+            const colorCode = getColorCode(selectedColor);
+            if (colorCode) {
+                popupColorBox.style.backgroundColor = colorCode;
+            }
+        }
+
+        const popupOptionElements = document.querySelectorAll("[class^='custom_main_product-carted_popup-option_']");
+
+        let optionIndex = 1;
+
+        popupOptionElements.forEach(optionElement => {
+            if (optionElement.id === "popup-color") {
+                return;
+            }
+
+            const selectedSize = getSelectedSize();
+            if (optionIndex === 1 && selectedSize) { 
+                optionElement.textContent = selectedSize;
+            }
+
+            optionIndex++;
+        });
+
+        popupColorBox.textContent = "";
+    }
+
+    addToCartButton.addEventListener("click", function () {
+        updatePopup();
+        popupContainer.classList.add("active");
+    
+        setTimeout(function () {
+            popupContainer.classList.remove("active");
+        }, 3000); 
+    });
+});
+
+
 
 
