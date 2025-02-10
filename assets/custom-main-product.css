@@ -561,4 +561,9 @@
     .custom_main_product-add_to_cart_and_quantity.disabled .custom_main_product-add_to_cart_installment_free_shipping-wrapper {
         width: 100%;
     }
+
+    .custom_main_product-add_to_cart_and_quantity.disabled .custom_main_product-installment_payments, 
+    .custom_main_product-add_to_cart_and_quantity.disabled .custom_main_product-free_shipping {
+        display: none;
+    }
 }
