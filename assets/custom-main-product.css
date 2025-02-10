@@ -332,7 +332,7 @@
     pointer-events: none;
     background: transparent;
     font-family: var(--font-body-family);
-    margin-right: -15px;
+    margin-right: -5px;
 }
 
 .custom_main_product-add_to_cart {
@@ -549,6 +549,10 @@
 
     .custom_main_product-quantity_btn {
         padding: 15px 10px;
+    }
+
+    #product-quantity {
+        margin-right: -15px;
     }
 
     .custom_main_product-add_to_cart_installment_free_shipping-wrapper {
