@@ -22,7 +22,10 @@
       "blocks": {
         "reviews_MMricQ": {
           "type": "reviews",
-          "settings": {}
+          "settings": {
+            "rating": 5,
+            "review_text": "107 reviews"
+          }
         },
         "title_8pcm64": {
           "type": "title",
@@ -34,14 +37,16 @@
         },
         "product_content_fGjkWb": {
           "type": "product_content",
-          "settings": {}
+          "settings": {
+            "inside_block_title": "What's inside:"
+          }
         },
         "variants_wrMWxp": {
           "type": "variants",
           "settings": {}
         },
-        "add_to_cart_TJWJFU": {
-          "type": "add_to_cart",
+        "add_to_cart_and_quantity_e8LLQr": {
+          "type": "add_to_cart_and_quantity",
           "settings": {}
         },
         "product_icons_4VtDHk": {
@@ -55,11 +60,14 @@
         "description_DirFHM",
         "product_content_fGjkWb",
         "variants_wrMWxp",
-        "add_to_cart_TJWJFU",
+        "add_to_cart_and_quantity_e8LLQr",
         "product_icons_4VtDHk"
       ],
       "settings": {
-        "product": "test-product"
+        "product": "test-product",
+        "color_background": "#FCF4EE",
+        "color_text_border": "#61402E",
+        "add_to_cart_background": "#F8C063"
       }
     }
   },
