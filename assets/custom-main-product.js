@@ -66,10 +66,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const checkedColor = document.querySelector(".custom_main_product-color_option:checked").value.toLowerCase();
   updateImagesAndThumbnails(checkedColor);
-});
 
-// Variants selectors, quantity input, add to cart button and price update
-document.addEventListener("DOMContentLoaded", function () {
+
+ // Variants selectors, quantity input, add to cart button and price update
+
     const productDataElement = document.querySelector(".custom_main_product-add_to_cart_and_quantity");
     
     // Parse product variants and inventory data
@@ -240,40 +240,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     updateVariant();
-});
-
-function updateInstallment() {
-    const priceElement = document.querySelector(".custom_main_product-price");
-    const installmentsElement = document.querySelector(".custom_main_product-number_of_instalments");
-    const singleInstallmentElement = document.querySelector(".custom_main_product-single_installment");
-
-    if (!priceElement || !installmentsElement || !singleInstallmentElement) return;
-
-    const priceText = priceElement.textContent.trim();
-    const priceMatch = priceText.match(/([\D]*)([\d,.]+)/);
-
-    if (!priceMatch) return;
-
-    const currencySymbol = priceMatch[1].trim();
-    const priceNumber = parseFloat(priceMatch[2].replace(/,/g, ""));
-    const installments = parseInt(installmentsElement.textContent.trim(), 10);
-
-    if (isNaN(priceNumber) || isNaN(installments) || installments <= 0) return;
-
-    const installmentPrice = (priceNumber / installments).toFixed(2);
-    singleInstallmentElement.textContent = `${currencySymbol}${installmentPrice}`;
-}
-
-// Observe price changes
-const priceObserver = new MutationObserver(updateInstallment);
-const priceElement = document.querySelector(".custom_main_product-price");
-if (priceElement) {
-    priceObserver.observe(priceElement, { childList: true, characterData: true, subtree: true });
-}
 
 
-// Add to cart popup
-document.addEventListener("DOMContentLoaded", function () {
+ // Add to cart popup
 
     const addToCartButton = document.getElementById("add-to-cart");
     const popupImage = document.querySelector(".custom_main_product-carted_popup-image img");
@@ -368,6 +337,38 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 3000); 
     });
 });
+
+function updateInstallment() {
+    const priceElement = document.querySelector(".custom_main_product-price");
+    const installmentsElement = document.querySelector(".custom_main_product-number_of_instalments");
+    const singleInstallmentElement = document.querySelector(".custom_main_product-single_installment");
+
+    if (!priceElement || !installmentsElement || !singleInstallmentElement) return;
+
+    const priceText = priceElement.textContent.trim();
+    const priceMatch = priceText.match(/([\D]*)([\d,.]+)/);
+
+    if (!priceMatch) return;
+
+    const currencySymbol = priceMatch[1].trim();
+    const priceNumber = parseFloat(priceMatch[2].replace(/,/g, ""));
+    const installments = parseInt(installmentsElement.textContent.trim(), 10);
+
+    if (isNaN(priceNumber) || isNaN(installments) || installments <= 0) return;
+
+    const installmentPrice = (priceNumber / installments).toFixed(2);
+    singleInstallmentElement.textContent = `${currencySymbol}${installmentPrice}`;
+}
+
+// Observe price changes
+const priceObserver = new MutationObserver(updateInstallment);
+const priceElement = document.querySelector(".custom_main_product-price");
+if (priceElement) {
+    priceObserver.observe(priceElement, { childList: true, characterData: true, subtree: true });
+}
+
+
+
 
 
 
